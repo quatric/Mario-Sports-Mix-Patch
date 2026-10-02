@@ -73,6 +73,17 @@ The Classic Controller then behaves exactly as Vague Rant's codes define it.
 
 Known limits: a Wii Remote must stay connected in GameCube mode; unplugging the pad mid-game falls back to the remote.
 
+## Releasing
+
+```
+python3 tools/release.py 1.0.0 --dry-run   # regenerate + check, change nothing
+python3 tools/release.py 1.0.0             # tag v1.0.0 and push; CI builds and attaches the downloads
+```
+
+`tools/release.py` needs a clean `main`, rebuilds `codes/` and `riivolution/`, runs `tools/check.py` (and
+`tools/verify.py` when `MSM_DOLS` points at retail DOLs), then pushes the tag. The workflow builds the patcher for
+macOS, Linux and Windows and attaches it with the Gecko and Riivolution zips.
+
 ## Credits
 
 * Classic Controller codes: **Vague Rant**

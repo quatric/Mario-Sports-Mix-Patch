@@ -139,6 +139,7 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
         with:
+          generate_release_notes: true
           files: MarioSportsMix-Patch-${{ matrix.target }}.*
 
   patch-files:
@@ -147,7 +148,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # The per-region filenames (REXE01, REXP01, REXJ01) are the disc ids; keep them.
+      # The per-region filenames (RMKE01, RMKP01, RMKJ01) are the disc ids; keep them.
       - name: Zip Gecko codes
         run: zip -qr MarioSportsMix-Patch-Gecko-Codes.zip codes
 
@@ -168,6 +169,7 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
         with:
+          generate_release_notes: true
           files: |
             MarioSportsMix-Patch-Gecko-Codes.zip
             MarioSportsMix-Patch-Riivolution.zip
