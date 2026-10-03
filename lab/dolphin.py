@@ -102,11 +102,11 @@ def write_config(user, gc, wiimote, video_dump=False, gecko=None, game_id=None):
             os.unlink(p)
         os.mkfifo(p)
     open(os.path.join(user, 'Config', 'Dolphin.ini'), 'w').write(
-        "[General]\nGDBPort = %d\n[Input]\nBackgroundInput = True\n[Interface]\nConfirmStop = False\nUsePanicHandlers = False\n"
-        "[Core]\nMMU = True\nCPUThread = False\nCPUCore = 4\nEnableDebugging = True\nEnableCheats = True\n"
+        "[General]\nGDBPort = %d\n[Input]\nBackgroundInput = True\n[Interface]\nConfirmStop = False\nUsePanicHandlers = %s\n"
+        "[Core]\nMMU = %s\nCPUThread = %s\nCPUCore = 4\nEnableDebugging = True\nEnableCheats = True\n"
         "WiimoteContinuousScanning = False\nWiimoteControllerInterface = False\n"
         "SIDevice0 = %d\nSIDevice1 = 0\nSIDevice2 = 0\nSIDevice3 = 0\n"
-        "[Analytics]\nPermissionAsked = True\nEnabled = False\n" % (GDB_PORT, 6 if gc else 0) +
+        "[Analytics]\nPermissionAsked = True\nEnabled = False\n" % (GDB_PORT, os.environ.get("LAB_PANIC","False"), os.environ.get("LAB_MMU","True"), os.environ.get("LAB_THREAD","False"), 6 if gc else 0) +
         ("[Movie]\nDumpFrames = True\nDumpFramesSilent = True\nDumpFramesAsImages = True\n" if video_dump else ""))
     pad = "[GCPad1]\nDevice = Pipe/0/gc\n"
     pad += "".join("Buttons/%s = `Button %s`\n" % (b, b) for b in 'ABXYZ')
@@ -118,7 +118,7 @@ def write_config(user, gc, wiimote, video_dump=False, gecko=None, game_id=None):
     open(os.path.join(user, 'Config', 'GCPadNew.ini'), 'w').write(pad)
 
     open(os.path.join(user, 'Config', 'Logger.ini'), 'w').write(
-        '[Options]\nVerbosity = 3\nWriteToFile = True\nWriteToConsole = False\n[Logs]\nOSREPORT = True\nBOOT = True\nCORE = True\nPOWERPC = True\n')
+        '[Options]\nVerbosity = 3\nWriteToFile = True\nWriteToConsole = False\n[Logs]\nOSREPORT = True\nBOOT = True\nCORE = True\nPOWERPC = True\nMEMMAP = True\nWII_IPC = True\nWIIMOTE = True\n')
     if gecko:
         # Gecko codes for one game, all enabled: `gecko` is a cheat-file body ($Name lines + code lines)
         names = [l[1:].strip() for l in gecko.splitlines() if l.startswith('$')]
