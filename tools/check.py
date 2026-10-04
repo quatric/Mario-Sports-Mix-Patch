@@ -10,6 +10,7 @@
     python3 tools/check.py
 """
 import os
+import re
 import struct
 import sys
 
@@ -23,6 +24,9 @@ from ops import Hook, Patch, b_insn
 from regions import REGIONS
 
 fail = []
+
+
+GECKO_ROOM = 0x80003000 - 0x800022A8
 
 
 def check(cond, msg):
@@ -71,6 +75,9 @@ def main():
     for region in REGIONS:
         ini = build.gecko_ini(region)
         check(open(os.path.join(root, 'codes', region + '.ini')).read() == ini, 'codes/%s.ini is stale (run tools/build.py)' % region)
+        # Dolphin silently drops Gecko codes that do not fit its code list (0x800022A8..0x80003000, minus the terminator)
+        lines = sum(1 for l in ini.splitlines() if re.fullmatch(r'[0-9A-F]{8} [0-9A-F]{8}', l))
+        check(lines * 8 + 8 <= GECKO_ROOM, 'codes/%s.ini: %d bytes of code, Dolphin has room for %d' % (region, lines * 8 + 8, GECKO_ROOM))
         check(open(os.path.join(root, 'riivolution', region + '.xml')).read() == build.riivolution_xml(region),
               'riivolution/%s.xml is stale (run tools/build.py)' % region)
     print('FAILED: %d' % len(fail) if fail else 'ok: all checks passed')

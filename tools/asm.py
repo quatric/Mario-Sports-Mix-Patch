@@ -47,7 +47,7 @@ def words(data):
     return list(struct.unpack('>%dI' % (len(data) // 4), data))
 
 
-CFLAGS = ['-O2', '-mcpu=750', '-msoft-float', '-msdata=none', '-ffreestanding', '-fno-pic', '-fno-builtin',
+CFLAGS = ['-O2', '-fno-unroll-loops', '-finline-limit=1', '-mcpu=750', '-msoft-float', '-msdata=none', '-ffreestanding', '-fno-pic', '-fno-builtin',
           '-fno-stack-protector', '-fno-jump-tables', '-fno-asynchronous-unwind-tables', '-fomit-frame-pointer',
           '-fno-ident', '-Wall', '-Werror']
 

@@ -37,8 +37,9 @@ Other install methods, generated from the same patch data:
 * `riivolution/<ID>.xml` - Riivolution patch
 
 The patched disc is the recommended way. The patches keep a few helper routines in low memory
-(`0x80001820-0x80003000`), where a Gecko code handler lives too, so the Gecko form is meant for
-the Classic Controller codes; the GameCube-pad Gecko code is **untested**.
+(`0x80001820-0x80003000`), where a Gecko code handler lives too, so the Gecko form is verified in Dolphin
+(both codes enabled together). Dolphin's Gecko code list has room for about 3.4 KB, so the combined list must stay below that;
+`tools/check.py` enforces it.
 
 ## GameCube controller
 
